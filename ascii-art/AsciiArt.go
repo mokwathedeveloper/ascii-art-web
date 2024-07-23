@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 )
-
+/* This code reads an ASCII art template from a file, processes it, and generates ASCII art for a given input string based on the template. It includes handling for multi-line input and escaped newline characters.*/
 func AsciiArt(textFromOutside string, artstylepath string) string {
 	// 3 textstyles in a folder
 	fileLines := ReadStandardTxt(artstylepath)
