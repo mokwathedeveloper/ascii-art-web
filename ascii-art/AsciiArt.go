@@ -8,12 +8,12 @@ import (
 )
 
 /* This code reads an ASCII art template from a file, processes it, and generates ASCII art for a given input string based on the template. It includes handling for multi-line input and escaped newline characters.*/
-func AsciiArt(textFromOutside string, artstylepath string) string {
+func AsciiArt(textFromOutside string, artstylepath string) (string, error) {
 	// 3 textstyles in a folder
 	fileLines := ReadStandardTxt(artstylepath)
 	asciiTemplates := return2dASCIIArray(fileLines)
-	str := printAllStringASCII(textFromOutside, asciiTemplates)
-	return str
+	str, err := printAllStringASCII(textFromOutside, asciiTemplates)
+	return str, err
 }
 
 func ReadStandardTxt(artstyle string) []string {
@@ -77,22 +77,15 @@ func returnAsciiCodeInt(s string) []int {
 	return tempIntArrLetter
 }
 
-func printAllStringASCII(text string, asciiTemplates [][]string) string {
-	returnString := ""
-	/*
-		if ends w \n it gonna print println $
-		if you can see text after \n chec;
-		before \n
-		if yes  println $
-		if no println
-	*/
+func printAllStringASCII(text string, asciiTemplates [][]string) (string, error) {
+	for _, ch := range text {
+		if ch < 32 || ch > 126 {
+			return "", fmt.Errorf("contains unpritable non ascii, %v", ch)
+		}
+	}
 
-	/*
-	   func to uses printMultipleCharacters print whole stringfrom outside
-	*/
-	// Split the input string into an array of strings
-	// split the line into words if there is a "\r\n" symbol
-	// substrings := returnstring2EndlineArray(text)
+	returnString := ""
+
 	substrings := strings.Split(text, "\r\n")
 	fmt.Println(substrings)
 	lenOfsubstrings := len(substrings)
@@ -114,7 +107,7 @@ func printAllStringASCII(text string, asciiTemplates [][]string) string {
 			returnString = fmt.Sprint(returnString, printMultipleCharacter(v, asciiTemplates))
 		}
 	}
-	return returnString
+	return returnString, nil
 }
 
 func returnstring2EndlineArray(text string) []string {
