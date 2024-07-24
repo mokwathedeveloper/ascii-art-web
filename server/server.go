@@ -1,5 +1,3 @@
-// server.go
-
 package server
 
 import (
