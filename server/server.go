@@ -16,7 +16,7 @@ func RegisterHandlers() {
 
 func StartServer() {
 	RegisterHandlers()
-	
+
 	log.Print("Listening on :http://localhost:8080/")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
