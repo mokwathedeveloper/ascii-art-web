@@ -3,12 +3,14 @@
 package handlers
 
 import (
-	ascii_art "ascii-art-web/ascii-art"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"path/filepath"
+
+	ascii_art "ascii-art-web/ascii-art"
 )
 
 // renderTemplateWithData renders a template with given data.
@@ -40,6 +42,10 @@ func ServeTemplate(w http.ResponseWriter, r *http.Request) {
 	// If the request is for "/index.html", redirect to "/"
 	if r.URL.Path == "/index.html" {
 		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+	if r.Method != http.MethodPost {
+		fmt.Println("Method not allowed")
 		return
 	}
 
@@ -79,7 +85,7 @@ func ServeTemplate(w http.ResponseWriter, r *http.Request) {
 func HandleAsciiArt(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) //400 error
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) // 400 error
 		return
 	}
 

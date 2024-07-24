@@ -37,18 +37,43 @@
       </div>
       <div class="mb-4">
         <label for="UserText" class="block text-gray-900 font-semibold mb-2">Enter your text:</label>
-        <textarea id="UserText" name="text" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900"></textarea>
+        <textarea id="UserText" name="text" placeholder="Type your text here..." class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-900 placeholder-gray-500"></textarea>
       </div>
       <div class="text-center">
         <input type="submit" value="Generate" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 cursor-pointer">
       </div>
     </form>
-    <div class="mt-6 bg-white bg-opacity-70 p-6 rounded-lg shadow-md backdrop-blur-md overflow-auto">
+    <div class="mt-6 bg-white bg-opacity-70 p-6 rounded-lg shadow-md backdrop-blur-md">
       <h2 class="text-2xl font-semibold mb-4 text-gray-900">Generated ASCII Art:</h2>
-      <pre class="whitespace-pre-wrap text-gray-900">{{.ASCIIArtResult}}</pre>
+      <div class="overflow-x-auto">
+        <pre class="whitespace-pre text-gray-900">{{.ASCIIArtResult}}</pre>
+      </div>
     </div>
   </div>
+  <script>
+
+function handleInput() {
+      const textarea = document.getElementById('UserText');
+      const button = document.getElementById('generateButton');
+      const warning = document.getElementById('inputWarning');
+      
+      if (textarea.value.trim() === '') {
+        button.disabled = true;
+        warning.classList.remove('hidden');
+      } else {
+        button.disabled = false;
+        warning.classList.add('hidden');
+      }
+    }
+    document.getElementById('UserText').addEventListener('focus', function() {
+      this.setAttribute('placeholder', '');
+    });
+    document.getElementById('UserText').addEventListener('blur', function() {
+      if (this.value === '') {
+        this.setAttribute('placeholder', 'Type your text here...');
+      }
+    });
+  </script>
 </body>
 </html>
 {{end}}
-
