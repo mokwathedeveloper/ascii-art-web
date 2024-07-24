@@ -83,14 +83,19 @@ func HandleAsciiArt(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) // 400 error
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
 	artStyle := r.FormValue("artstyle")
 	userText := r.FormValue("text")
 	artStylePath := "ascii-art/artstyles/" + artStyle + ".txt"
-	asciiArtResult := ascii_art.AsciiArt(userText, artStylePath)
+	asciiArtResult, err := ascii_art.AsciiArt(userText, artStylePath)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) //400
+		return
+	}
+
 	data := struct {
 		ASCIIArtResult string
 	}{
