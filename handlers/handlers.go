@@ -1,9 +1,6 @@
-// handlers.go
-
 package handlers
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -44,10 +41,6 @@ func ServeTemplate(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	if r.Method != http.MethodPost {
-		fmt.Println("Method not allowed")
-		return
-	}
 
 	// Define the layout path
 	lp := filepath.Join("templates", "layout.html")
@@ -83,6 +76,11 @@ func ServeTemplate(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleAsciiArt(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
 	err := r.ParseForm()
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest) // 400 error
