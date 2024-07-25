@@ -10,16 +10,19 @@ import (
 /* This code reads an ASCII art template from a file, processes it, and generates ASCII art for a given input string based on the template. It includes handling for multi-line input and escaped newline characters.*/
 func AsciiArt(textFromOutside string, artstylepath string) (string, error) {
 	// 3 textstyles in a folder
-	fileLines := ReadStandardTxt(artstylepath)
+	fileLines, Err := ReadStandardTxt(artstylepath)
+	if Err != nil {
+		return "", Err
+	}
 	asciiTemplates := return2dASCIIArray(fileLines)
 	str, err := printAllStringASCII(textFromOutside, asciiTemplates)
 	return str, err
 }
 
-func ReadStandardTxt(artstyle string) []string {
+func ReadStandardTxt(artstyle string) ([]string, error) {
 	readFile, err := os.Open(artstyle)
 	if err != nil {
-		fmt.Println(err)
+		return nil, err
 	}
 	fileScanner := bufio.NewScanner(readFile)
 	fileScanner.Split(bufio.ScanLines)
@@ -30,7 +33,7 @@ func ReadStandardTxt(artstyle string) []string {
 	}
 
 	readFile.Close()
-	return fileLines
+	return fileLines, nil
 }
 
 func return2dASCIIArray(fileLines []string) [][]string {
