@@ -80,7 +80,11 @@ func returnAsciiCodeInt(s string) []int {
 func printAllStringASCII(text string, asciiTemplates [][]string) (string, error) {
 	for _, ch := range text {
 		if ch < 32 || ch > 126 {
-			return "", fmt.Errorf("contains unpritable non ascii, %v", ch)
+			if ch != 10 {
+				if ch != 13 {
+					return "", fmt.Errorf("contains unpritable non ascii, %v", ch)
+				}
+			}
 		}
 	}
 
